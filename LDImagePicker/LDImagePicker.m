@@ -51,7 +51,18 @@
         _scale = 1;
     }
     
-    [viewController presentViewController:_imagePickerController animated:YES completion:nil];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [viewController presentViewController:_imagePickerController animated:YES completion:^{
+                [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleDefault];
+            }];
+        });
+    }else{
+        [viewController presentViewController:_imagePickerController animated:YES completion:^{
+            [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleDefault];
+        }];
+    }
+
 }
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
